@@ -1,0 +1,57 @@
+psql -U postgres -h localhost -d auth_db
+
+psql -U postgres
+\c auth_db
+
+
+1. Fehler 401 Unauthorized bei Benutzer- & Rollen-API beheben
+
+    Prüfe, ob im Frontend die Axios-Requests mit withCredentials: true gesetzt sind (sollte es sein).
+
+    Stelle sicher, dass im Backend die Middleware verifyToken für diese Routen korrekt greift und der Cookie mit dem JWT-Token auch ankommt.
+
+    Prüfe, ob im Browser Cookies überhaupt gesetzt werden (Developer Tools → Application → Cookies).
+
+    Backend-CORS richtig konfigurieren: credentials: true und der Origin exakt mit dem Frontend übereinstimmt.
+
+    Eventuell Debug-Logging in verifyToken Middleware einbauen, um zu sehen, ob Token erkannt wird.
+
+2. Benutzerverwaltung: Rollen und Berechtigungen korrekt laden und anzeigen
+
+    Im Backend sicherstellen, dass getAllUsers() in userService.js auch die Rollen mit Berechtigungen lädt, sonst fehlt die Berechtigungsanzeige.
+
+    Im Frontend prüfen, ob die Datenstruktur der Nutzer Rollen + Berechtigungen korrekt ankommt und korrekt dargestellt wird.
+
+    Editieren der Rolle eines Benutzers im Frontend speichern (PUT Request) und Backend-Logik testen.
+
+3. Berechtigungen-Seite: Rollen & Berechtigungen verwalten
+
+    Backend-Route /api/roles-permissions implementieren, die Rollen inkl. aller Berechtigungen zurückgibt.
+
+    Backend-Routen zum Ändern von Rollen-Berechtigungen testen und absichern.
+
+    Frontend-Komponente Berechtigungen.jsx testen und Funktionalität prüfen (Checkboxen, Speichern, Neue Rolle anlegen, Löschen).
+
+4. Frontend AuthContext & Routing
+
+    Sicherstellen, dass der AuthContext die Benutzerinfos aus /api/profile korrekt einliest und user + permissions korrekt gesetzt werden.
+
+    Routen schützen über ProtectedRoute mit passenden requiredPermission Props.
+
+    Logout-Funktion sauber testen, Cookies sollten gelöscht werden und Benutzer wird ausgeloggt.
+
+5. Fehlende Funktionalitäten / Verbesserungen
+
+    User Einladung und Content Verwaltung noch implementieren, falls notwendig.
+
+    Styling / UX verbessern (Bootstrap Klassen und Fehlerbehandlung).
+
+    Eventuelle Unit-Tests oder Integrationstests ergänzen.
+
+6. Deployment & Sicherheit
+
+    secure: true im Cookie setzen, wenn du HTTPS nutzt (Produktivbetrieb).
+
+    Token-Laufzeit und Refresh-Mechanismus überlegen.
+
+    Fehler- und Logging-Strategie für den Server verfeinern.
