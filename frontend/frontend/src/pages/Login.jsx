@@ -18,17 +18,17 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const userData = await login(email, password);
-      setLoading(false);
+      const role = await login(email, password);
 
-      // Weiterleitung basierend auf Rolle
-      if (userData.role === "admin") {
+      if (role === "admin") {
         navigate("/admin/dashboard");
-      } else if (userData.role === "superuser") {
+      } else if (role === "superuser") {
         navigate("/superuser/dashboard");
       } else {
         navigate("/wiki");
       }
+
+      setLoading(false);
     } catch (err) {
       setError("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");
       setLoading(false);
