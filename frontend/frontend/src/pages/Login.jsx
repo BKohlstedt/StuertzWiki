@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -18,20 +17,15 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // login gibt den user mit Rolle zurück
-      const loggedInUser = await login(email, password);
-
-      // Weiterleitung je nach Rolle
-      if (loggedInUser.role === "admin") {
+      await login(email, password);
+      // Navigation nach Rolle
+      if (login.role === "admin") {
         navigate("/admin/dashboard");
-      } else if (loggedInUser.role === "superuser") {
+      } else if (login.role === "superuser") {
         navigate("/superuser/dashboard");
-      } else if (loggedInUser.role === "user") {
-        navigate("/wiki");
       } else {
-        setError("Unbekannte Rolle, bitte Administrator kontaktieren.");
+        navigate("/wiki");
       }
-
       setLoading(false);
     } catch (err) {
       setError("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");

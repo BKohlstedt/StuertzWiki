@@ -17,9 +17,6 @@ const placeholderImage = "/images/placeholder.png";
 export default function WikiStartseite() {
   const { loading, error, data } = useQuery(GET_DEPARTMENTS);
 
-  console.log("Departments:", data?.departments);  // log
-
-
   if (loading) return <p>Lade Abteilungen...</p>;
   if (error) return <p>Fehler beim Laden der Abteilungen: {error.message}</p>;
 
