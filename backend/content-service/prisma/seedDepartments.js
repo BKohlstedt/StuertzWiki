@@ -3,37 +3,36 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const departments = [
-  "Vertrieb",
-  "PM",
-  "EKon",
-  "MKon",
-  "SKon",
-  "Controlling",
-  "Fertigungsleitung",
-  "Halle5",
-  "Halle7",
-  "Empore",
-  "Service",
-  "FieldService",
-  "Smi",
-  "Stuga",
-  "Spl",
-  "Smc"
+  { title: "Vertrieb", imageUrl: "/assets/vertrieb.png" },
+  { title: "PM", imageUrl: "/assets/pm.png" },
+  { title: "EKon", imageUrl: "/assets/ekon.png" },
+  { title: "MKon", imageUrl: "/assets/mkon.png" },
+  { title: "SKon", imageUrl: "/assets/skon.png" },
+  { title: "Controlling", imageUrl: "/assets/controlling.png" },
+  { title: "Fertigungsleitung", imageUrl: "/assets/fertigungsleitung.png" },
+  { title: "Halle5", imageUrl: "/assets/halle5.png" },
+  { title: "Halle7", imageUrl: "/assets/halle7.png" },
+  { title: "Empore", imageUrl: "/assets/empore.png" },
+  { title: "Service", imageUrl: "/assets/service.png" },
+  { title: "FieldService", imageUrl: "/assets/fieldservice.png" },
+  { title: "Smi", imageUrl: "/assets/smi.png" },
+  { title: "Stuga", imageUrl: "/assets/stuga.png" },
+  { title: "Spl", imageUrl: "/assets/spl.png" },
+  { title: "Smc", imageUrl: "/assets/smc.png" },
 ];
 
 async function main() {
-  for (const title of departments) {
-    // Prüfe, ob Abteilung schon existiert
-    const exists = await prisma.department.findUnique({ where: { title } });
+  for (const dept of departments) {
+    const exists = await prisma.department.findUnique({ where: { title: dept.title } });
     if (!exists) {
       await prisma.department.create({
         data: {
-          title,
-          imageUrl: null,
+          title: dept.title,
+          imageUrl: dept.imageUrl,
           isLocked: false,
         },
       });
-      console.log(`Abteilung "${title}" erstellt.`);
+      console.log(`Abteilung "${dept.title}" erstellt.`);
     }
   }
 }
