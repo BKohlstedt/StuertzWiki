@@ -1,7 +1,6 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
 import WikiLayout from "../../components/WikiLayout";
-import "./WikiStartseite.css";
 
 const GET_DEPARTMENTS = gql`
   query {
@@ -13,31 +12,64 @@ const GET_DEPARTMENTS = gql`
   }
 `;
 
+const placeholderImage = "/images/placeholder.png";
+
 export default function WikiStartseite() {
   const { loading, error, data } = useQuery(GET_DEPARTMENTS);
+
+  console.log("Departments:", data?.departments);  // log
+
 
   if (loading) return <p>Lade Abteilungen...</p>;
   if (error) return <p>Fehler beim Laden der Abteilungen: {error.message}</p>;
 
-  const departments = data.departments;
-
   return (
     <WikiLayout>
-      <div className="department-grid">
-        {departments.map((dept) => (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "1rem",
+          padding: "1rem 2rem",
+          justifyContent: "center",
+        }}
+      >
+        {data.departments.map(({ id, title, imageUrl }) => (
           <a
-            key={dept.id}
-            href={`/wiki/department/${dept.id}`}
-            className="department-tile"
-            tabIndex={0}
+            key={id}
+            href={`/wiki/department/${id}`}
+            style={{
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              overflow: "hidden",
+              textDecoration: "none",
+              color: "inherit",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              boxShadow: "0 2px 5px rgb(0 0 0 / 0.1)",
+            }}
           >
-            <div className="tile-title">{dept.title}</div>
             <div
-              className="tile-image"
               style={{
-                backgroundImage: `url(${dept.imageUrl || "/images/placeholder.png"})`,
+                backgroundColor: "#007bff",
+                color: "white",
+                padding: "0.5rem 1rem",
+                fontWeight: "bold",
+                fontSize: "1.1rem",
               }}
-              aria-label={`Bild der Abteilung ${dept.title}`}
+            >
+              {title}
+            </div>
+            <div
+              style={{
+                backgroundImage: `url(${imageUrl || placeholderImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                flexGrow: 1,
+                minHeight: "120px",
+              }}
+              aria-label={`Bild der Abteilung ${title}`}
               role="img"
             />
           </a>
