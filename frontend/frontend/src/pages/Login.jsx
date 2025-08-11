@@ -18,9 +18,17 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await login(email, password);
-      // Weiterleitung wird in App.jsx geregelt via RequireNoAuth
+      const userData = await login(email, password);
       setLoading(false);
+
+      // Weiterleitung basierend auf Rolle
+      if (userData.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (userData.role === "superuser") {
+        navigate("/superuser/dashboard");
+      } else {
+        navigate("/wiki");
+      }
     } catch (err) {
       setError("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");
       setLoading(false);

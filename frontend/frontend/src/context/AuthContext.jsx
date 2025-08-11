@@ -1,3 +1,4 @@
+// src/context/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axios.js";
 
@@ -36,23 +37,19 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    try {
-      await api.post("/login", { email, password });
-      const res = await api.get("/profile");
-      if (!res.data.user?.role) {
-        throw new Error("Rolle nicht gefunden");
-      }
-      setUser({
-        email: res.data.user.email,
-        role: res.data.user.role.toLowerCase(),
-        permissions: res.data.user.permissions,
-      });
-      setIsAuthenticated(true);
-    } catch (error) {
-      setUser(null);
-      setIsAuthenticated(false);
-      throw error;
+    await api.post("/login", { email, password });
+    const res = await api.get("/profile");
+    if (!res.data.user?.role) {
+      throw new Error("Rolle nicht gefunden");
     }
+    const userData = {
+      email: res.data.user.email,
+      role: res.data.user.role.toLowerCase(),
+      permissions: res.data.user.permissions,
+    };
+    setUser(userData);
+    setIsAuthenticated(true);
+    return userData;  // Wichtig: Rückgabe der User-Daten für Login-Komponente
   };
 
   const logout = async () => {
