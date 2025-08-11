@@ -18,14 +18,18 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const role = await login(email, password);
+      // login gibt den user mit Rolle zurück
+      const loggedInUser = await login(email, password);
 
-      if (role === "admin") {
+      // Weiterleitung je nach Rolle
+      if (loggedInUser.role === "admin") {
         navigate("/admin/dashboard");
-      } else if (role === "superuser") {
+      } else if (loggedInUser.role === "superuser") {
         navigate("/superuser/dashboard");
-      } else {
+      } else if (loggedInUser.role === "user") {
         navigate("/wiki");
+      } else {
+        setError("Unbekannte Rolle, bitte Administrator kontaktieren.");
       }
 
       setLoading(false);

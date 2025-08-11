@@ -2,13 +2,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/ProtectedRoute";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./components/AdminLayout";
 import SuperuserLayout from "./components/SuperuserLayout";
+import WikiLayout from "./components/WikiLayout";
 
 import Login from "./pages/Login";
-
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Benutzerverwaltung from "./pages/admin/Benutzerverwaltung";
 import ContentVerwaltung from "./pages/admin/ContentVerwaltung";
@@ -26,39 +26,40 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
+          {/* Öffentliche Login-Seite */}
           <Route path="/" element={<Login />} />
 
-          {/* Admin-Bereich nur für Admins */}
-          <Route element={<ProtectedRoute requiredRole="admin" />}>
+          {/* Admin-Bereich - nur für Admins */}
+          <Route element={<ProtectedRoute requiredRole="ADMIN" />}>
             <Route element={<AdminLayout />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/users" element={<Benutzerverwaltung />} />
               <Route path="/admin/content" element={<ContentVerwaltung />} />
               <Route path="/admin/invite" element={<UserEinladung />} />
               <Route path="/admin/overview" element={<Uebersicht />} />
-              <Route
-                element={<ProtectedRoute requiredRole="admin" />}
-              >
+
+              {/* Nur Admins mit spezieller Berechtigung */}
+              <Route element={<ProtectedRoute requiredPermission="manage_permissions" />}>
                 <Route path="/admin/permissions" element={<Berechtigungen />} />
               </Route>
             </Route>
           </Route>
 
-          {/* Superuser-Bereich nur für Superuser */}
-          <Route element={<ProtectedRoute requiredRole="superuser" />}>
+          {/* Superuser-Bereich - nur für Superuser */}
+          <Route element={<ProtectedRoute requiredRole="SUPERUSER" />}>
             <Route element={<SuperuserLayout />}>
-              <Route
-                path="/superuser/dashboard"
-                element={<SuperuserDashboard />}
-              />
-              {/* Hier weitere Superuser-Routen */}
+              <Route path="/superuser/dashboard" element={<SuperuserDashboard />} />
+              {/* Weitere Superuser-Routen hier */}
             </Route>
           </Route>
 
-          {/* Wiki nur für User & Superuser */}
-          <Route element={<ProtectedRoute requiredRole={["user", "superuser"]} />}>
-            <Route path="/wiki" element={<WikiStartseite />} />
-            <Route path="/wiki/department/:id" element={<DepartmentDetail />} />
+          {/* Wiki-Bereich - nur für User und Superuser */}
+          <Route element={<ProtectedRoute requiredRole={["USER", "SUPERUSER"]} />}>
+            <Route element={<WikiLayout />}>
+              <Route path="/wiki" element={<WikiStartseite />} />
+              <Route path="/wiki/department/:id" element={<DepartmentDetail />} />
+              {/* Weitere Wiki-Routen hier */}
+            </Route>
           </Route>
         </Routes>
       </Router>

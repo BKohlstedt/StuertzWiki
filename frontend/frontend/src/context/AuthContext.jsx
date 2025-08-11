@@ -42,13 +42,15 @@ export function AuthProvider({ children }) {
     if (!res.data.user?.role) {
       throw new Error("Rolle nicht gefunden");
     }
-    setUser({
+    const loggedInUser = {
       email: res.data.user.email,
       role: res.data.user.role.toLowerCase(),
       permissions: res.data.user.permissions,
-    });
+    };
+    setUser(loggedInUser);
     setIsAuthenticated(true);
-    return res.data.user.role.toLowerCase(); // Rolle zurückgeben für Weiterleitung
+
+    return loggedInUser;
   };
 
   const logout = async () => {
