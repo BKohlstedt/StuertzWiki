@@ -1,4 +1,3 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axios.js";
 
@@ -23,6 +22,7 @@ export function AuthProvider({ children }) {
           email: res.data.user.email,
           role: res.data.user.role.toLowerCase(),
           permissions: res.data.user.permissions,
+          id: res.data.user.id, // wichtig für Autorenzuweisung
         });
         setIsAuthenticated(true);
       } catch {
@@ -46,6 +46,7 @@ export function AuthProvider({ children }) {
       email: res.data.user.email,
       role: res.data.user.role.toLowerCase(),
       permissions: res.data.user.permissions,
+      id: res.data.user.id, // wichtig
     };
     setUser(loggedInUser);
     setIsAuthenticated(true);

@@ -1,10 +1,14 @@
-import axios from "axios";
+// src/api/graphqlClient.js
+import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
-const api = axios.create({
-  baseURL: "http://localhost:4000", // Content-Service GraphQL Endpunkt
-  headers: {
-    "Content-Type": "application/json",
-  },
+const httpLink = createHttpLink({
+  uri: "/graphql",  // statt http://localhost:4000/graphql
+  credentials: "include", // sehr wichtig für Cookie-Auth
 });
 
-export default api;
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+});
+
+export default client;

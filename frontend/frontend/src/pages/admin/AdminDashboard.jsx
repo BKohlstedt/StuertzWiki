@@ -9,37 +9,37 @@ export default function AdminDashboard() {
     {
       title: "Benutzerverwaltung",
       path: "/admin/users",
-      image: "/images/users.png",
+      image: "/assets/users.png",
       colorClass: "bg-primary text-white",
     },
     {
       title: "Content Verwaltung",
       path: "/admin/content",
-      image: "/images/content.png",
+      image: "/assets/content.png",
       colorClass: "bg-success text-white",
     },
     {
       title: "User Einladung",
       path: "/admin/invite",
-      image: "/images/invite.png",
+      image: "/assets/invite.png",
       colorClass: "bg-warning text-dark",
     },
     {
       title: "Berechtigungen",
       path: "/admin/permissions",
-      image: "/images/permissions.png",
+      image: "/assets/permissions.png",
       colorClass: "bg-danger text-white",
     },
     {
       title: "Übersicht",
       path: "/admin/overview",
-      image: "/images/overview.png",
+      image: "/assets/overview.png",
       colorClass: "bg-info text-white",
     },
   ];
 
   const handleImageError = (e) => {
-    e.target.src = "/images/placeholder.png";
+    e.target.src = "/assets/placeholder.png";
   };
 
   return (

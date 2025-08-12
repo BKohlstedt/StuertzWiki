@@ -4,7 +4,6 @@ import prisma from '../prisma/client.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Benutzer anhand der Anmeldedaten authentifizieren
 export async function authenticateUser(email, password) {
   const user = await prisma.user.findUnique({
     where: { email },
@@ -28,7 +27,7 @@ export async function authenticateUser(email, password) {
 
   const token = jwt.sign(
     {
-      id: user.id,
+      id: user.id,         // Wichtig: ID hier mitschicken
       email: user.email,
       role: user.role.name,
       permissions: user.role.permissions.map((rp) => rp.permission.key),

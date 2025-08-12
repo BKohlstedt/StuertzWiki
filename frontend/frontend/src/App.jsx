@@ -9,6 +9,7 @@ import SuperuserLayout from "./components/SuperuserLayout";
 import WikiLayout from "./components/WikiLayout";
 
 import Login from "./pages/Login";
+
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Benutzerverwaltung from "./pages/admin/Benutzerverwaltung";
 import ContentVerwaltung from "./pages/admin/ContentVerwaltung";
@@ -20,6 +21,8 @@ import SuperuserDashboard from "./pages/superuser/SuperuserDashboard";
 
 import WikiStartseite from "./pages/wiki/WikiStartseite";
 import DepartmentDetail from "./pages/wiki/DepartmentDetail";
+import PageDetail from "./pages/wiki/PageDetail";
+import TopicDetail from "./pages/wiki/TopicDetail";
 
 function App() {
   return (
@@ -58,6 +61,8 @@ function App() {
             <Route element={<WikiLayout />}>
               <Route path="/wiki" element={<WikiStartseite />} />
               <Route path="/wiki/department/:id" element={<DepartmentDetail />} />
+              <Route path="/wiki/page/:id" element={<PageDetail />} />
+              <Route path="/wiki/topic/:id" element={<TopicDetail />} />
               {/* Weitere Wiki-Routen hier */}
             </Route>
           </Route>

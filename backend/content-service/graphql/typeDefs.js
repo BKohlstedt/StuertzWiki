@@ -1,14 +1,12 @@
 import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
-  # User-Rollen
   enum RoleName {
     ADMIN
     SUPERUSER
     USER
   }
 
-  # Department (Abteilung)
   type Department {
     id: ID!
     title: String!
@@ -19,7 +17,6 @@ const typeDefs = gql`
     pages: [Page!]!
   }
 
-  # Page (Indexseite pro Abteilung)
   type Page {
     id: ID!
     departmentId: Int!
@@ -33,7 +30,6 @@ const typeDefs = gql`
     topics: [Topic!]!
   }
 
-  # Topic (Thema auf einer Page)
   type Topic {
     id: ID!
     pageId: Int!
@@ -46,14 +42,23 @@ const typeDefs = gql`
     posts: [Post!]!
   }
 
-  # Post (Beiträge zu einem Thema)
+  type File {
+    id: ID!
+    postId: Int!
+    filename: String!
+    description: String
+    url: String!
+  }
+
   type Post {
     id: ID!
     topicId: Int!
     authorId: Int!
+    title: String!
+    shortDescription: String
     content: String!
     images: [String!]
-    files: [String!]
+    files: [File!]!
     createdAt: String!
     updatedAt: String!
     approved: Boolean!
@@ -61,7 +66,6 @@ const typeDefs = gql`
     author: User!
   }
 
-  # User
   type User {
     id: ID!
     email: String!
@@ -69,16 +73,16 @@ const typeDefs = gql`
     posts: [Post!]!
   }
 
-  # Query Root
   type Query {
-    departments: [Department!]!
+    departments(isLocked: Boolean): [Department!]!
     department(id: ID!): Department
     pagesByDepartment(departmentId: Int!): [Page!]!
+    page(id: ID!): Page
     topicsByPage(pageId: Int!): [Topic!]!
+    topic(id: ID!): Topic
     postsByTopic(topicId: Int!): [Post!]!
   }
 
-  # Input Typen für Mutations
   input CreateDepartmentInput {
     title: String!
     imageUrl: String
@@ -119,22 +123,31 @@ const typeDefs = gql`
     isLocked: Boolean
   }
 
+  input CreateFileInput {
+    filename: String!
+    description: String
+    url: String!
+  }
+
   input CreatePostInput {
     topicId: Int!
+    title: String!
+    shortDescription: String
     content: String!
     images: [String!]
-    files: [String!]
+    files: [CreateFileInput!]
     approved: Boolean
   }
 
   input UpdatePostInput {
+    title: String
+    shortDescription: String
     content: String
     images: [String!]
-    files: [String!]
+    files: [CreateFileInput!]
     approved: Boolean
   }
 
-  # Mutation Root
   type Mutation {
     createDepartment(input: CreateDepartmentInput!): Department!
     updateDepartment(id: ID!, input: UpdateDepartmentInput!): Department!

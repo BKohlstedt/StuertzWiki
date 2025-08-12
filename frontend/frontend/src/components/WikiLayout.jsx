@@ -1,15 +1,16 @@
 // src/components/WikiLayout.jsx
 import React from "react";
 import { useAuth } from "../context/AuthContext";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 export default function WikiLayout() {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       console.error("Logout fehlgeschlagen", err);
     }
